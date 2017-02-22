@@ -1,0 +1,35 @@
+extends layout
+
+block content
+  h3 Search results for "#{query}": 
+  table(style="table-layout: fixed;")
+    for result in results
+      tr(class="search-result-panel", onclick="window.document.location='/detail?id=#{result.zpid}';", style="border-bottom: 1px solid #eaeaea; ")
+          td(style="wdith: 400px; padding-left:20px;")
+            if result.image_url == ""
+              img(src="/default.png", style="max-width: 250px; max-height: 200px")
+            else
+              img(src= result.image_url, onerror="this.src='/default.jpg'", style="max-width: 250px; max-height: 200px")
+          td(style="width: 300px; padding-left: 20px")
+            img(width="185" src="http://dev.virtualearth.net/REST/V1/Imagery/Map/Road/#{result.latitude}%2C#{result.longitude}/13?mapSize=200,200&format=png&pushpin=#{result.latitude},#{result.longitude};86;&key=AqO1MgaLkk7DdoBd-2lajxSIhDXs5aMzE_xLzPU-Lmmjh0rHy2Z6NQeb_iwhYBVx" alt="Bing Map of #{result.latitude}, {result.longitude}")
+
+          td(style="padding-left: 50px; width: 1000px")
+            table
+              tr
+                h3 #{result.street_address}
+              tr
+                h4 #{result.city}, #{result.state} #{result.zipcode}
+              tr
+                if result.is_for_sale == true
+                  h4(style="color: blue;") Listing Price: $#{result.list_price}
+                else
+                  h4(style="color: red;") Not For Sale
+              tr
+                p #{result.property_type}
+              tr
+                p #{result.bedroom} Bed / #{result.bathroom} Bath
+              tr
+                p #{result.size} sqft
+    else
+      li Not results found.
+

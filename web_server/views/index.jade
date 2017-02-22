@@ -1,0 +1,33 @@
+doctype html
+html
+
+  head
+    title= title
+    link(rel='stylesheet', href='/bootstrap-3.3.7-dist/css/bootstrap.min.css')
+    link(rel='stylesheet', href='/bootstrap-3.3.7-dist/css/bootstrap-theme.min.css')
+
+  body
+    .navbar.navbar-fixed-top(role='navigation')
+      .container-fluid
+        .nav.navbar-right
+          if logged_in_user
+            form(metdho="get", action="/logout", id="logout")
+              input(class="btn navbar-btn" value="Log out" type="submit" style="margin-right:120px; margin-top: 40px; font-size:110%; background-color: #4285f4; color: white;")
+          else
+            form(metdho="get", action="/login", id="login")
+              input(class="btn navbar-btn" value="Sign in" type="submit" style="margin-right:120px; margin-top: 40px; font-size:110%; background-color: #4285f4; color: white;")
+
+    div(style="margin-top: 10%")
+      img(src="/logo.png", style="display: block; margin-left: auto; margin-right: auto ")
+      br
+      br
+      br
+      .container
+        .col-md-2
+        .col-md-8
+          form(method="get", action="/search", id="search")
+            .col-md-10
+              input.form-control(id="search_text", name="search_text", placeholder="Search by City/State or Zipcode" style="font-size: 120%;")
+            .col-md-2
+              input.form-control(class="btn" type="submit" value="Search" style="font-size: 120%; background-color: #4285f4; color: white;")
+        .col-md-2

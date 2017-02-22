@@ -1,0 +1,78 @@
+extends layout
+
+block content
+  table
+    tr
+      td(colspan="2", style="100%")
+        div(style="float:left;")
+          if property.image_url == ""
+            img(src="/default.png", style="width:500px;")
+          else
+            img(src= property.image_url, onerror="this.src='/default.jpg'", style="width:500px;")
+        div(style="float:left; margin-left:40px;")
+          div(id="map", style="width:300px; height:300px;")
+    tr
+      td(style="padding-left:50px; width:800px;")
+        table
+          tr
+            h2 #{property.street_address},
+            h3 #{property.city}, #{property.state} #{property.zipcode}
+          tr
+            h4 #{property.property_type} - #{property.bedroom} Bed / #{property.bathroom} Bath - #{property.size} sqft
+          tr
+      td(style="width:200px;")
+        if property.is_for_sale == true
+          h4(style="color: green;") • For Sale
+          span.h3 $#{property.list_price}
+        else
+          h4(style="color: red;") Not For Sale
+        br
+        h4 Estimate value:
+        if property.predicted_change >= 0
+          span.h4(style="color: green;") $#{property.predicted_value} (+#{property.predicted_change}%)
+        else
+          span.h4(style="color: red;") $#{property.predicted_value} (#{property.predicted_change}%)
+
+    tr
+      td(style="padding-left: 50px; width: 600px;")
+        p= property.description
+    tr
+      td(style="padding-left: 50px; width: 600px;")
+        br
+        b Facts
+    tr
+      td(style="padding-left: 50px; width: 600px;")
+        table
+          for fact_group in property.facts
+            td(style="width: 30%;" valign="top")
+              ul
+                for fact in fact_group
+                  li= fact
+    tr
+      td(style="padding-left: 50px; width: 600px;")
+        br
+        b Additional Facts
+    tr
+      td(style="padding-left: 50px; width: 600px;")
+        table
+          for additional_fact_group in property.additional_facts
+            td(style="width: 30%;" valign="top")
+              ul
+                for additional_fact in additional_fact_group
+                  li= additional_fact
+
+  script.
+    function loadMapScenario() {
+        var map = new Microsoft.Maps.Map(document.getElementById('map'), {
+            credentials: 'AqO1MgaLkk7DdoBd-2lajxSIhDXs5aMzE_xLzPU-Lmmjh0rHy2Z6NQeb_iwhYBVx',
+            center: new Microsoft.Maps.Location(#{property.latitude}, #{property.longitude}),
+            mapTypeId: Microsoft.Maps.MapTypeId.road,
+            zoom: 13
+        });
+
+        var pushpin = new Microsoft.Maps.Pushpin(map.getCenter(), { icon: 'https://www.bingmapsportal.com/Content/images/poi_custom.png',
+            anchor: new Microsoft.Maps.Point(12, 39) });
+
+        map.entities.push(pushpin);  
+    }
+  script(type='text/javascript' src='http://www.bing.com/api/maps/mapcontrol?branch=release&callback=loadMapScenario' async defer)

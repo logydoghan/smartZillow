@@ -1,0 +1,21 @@
+doctype html
+html
+  head
+    title= title
+    link(rel='stylesheet', href='/bootstrap-3.3.7-dist/css/bootstrap.min.css')
+    link(rel='stylesheet', href='/bootstrap-3.3.7-dist/css/bootstrap-theme.min.css')
+
+  body
+    .container
+      .col-sm-6.col-md-4.col-md-offset-4
+        h1 Please Login
+        br
+        form.form-signin(method="post", action="/login", id="loginForm", style="max-wdith: 300px;")
+          .form-group
+            input(class="form-control", id="email", type="email", name="email", placeholder="Enter your email", required)
+          .form-group
+            input(class="form-control", id="password", type="password", name="password", placeholder="Password", required)
+          input(class="btn btn-default btn-block" type="submit", value="Log in")
+        br
+        - if (message)
+          div.alert.alert-danger(role="alert") !{message}

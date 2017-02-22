@@ -1,0 +1,49 @@
+doctype html
+html
+  head
+    title= title
+    link(rel='stylesheet', href='/bootstrap-3.3.7-dist/css/bootstrap.min.css')
+    link(rel='stylesheet', href='/bootstrap-3.3.7-dist/css/bootstrap-theme.min.css')
+
+    script(type='text/javascript').
+      function validateForm() {
+        var password1 = document.forms["register-form"]["password"].value;
+        var password2 = document.forms["register-form"]["confirm-password"].value;
+        if (password1 != password2) {
+          var msg_div = document.getElementById("message");
+          msg_div.innerHTML = "Password not match";
+          msg_div.style.visibility = "visible";
+          document.getElementById("password").style.borderColor = "#E34234";
+          document.getElementById("confirm-password").style.borderColor = "#E34234";
+          return false;
+        }
+        return true;
+      }
+
+  body
+    .container
+      .col-md-6.col-md-offset-3
+        div
+          h1  Welcome aboard!
+          hr
+          form(id='register-form', name="register-form", onsubmit='return validateForm();', method='POST', action="/register")
+            .form-group
+              label(for='email') Email Address
+              input(type='email', name='email', class='form-control', 
+                id='email', placeholder='Enter email', required)
+            .form-group
+              label(for='password') Password
+              input(type='password', name='password', class='form-control', 
+                id='password', placeholder='Enter password', required)
+            .form-group
+              label(for='confirm-password') Confirm Password
+              input(type='password', name='confirm-password', class='form-control', 
+                id='confirm-password', placeholder='Confirm password', required)
+            .form-group
+              button.btn.btn-default Register
+              &nbsp&nbsp&nbsp&nbsp
+              a(href="login") or Login
+        - if (message)
+          #message.alert.alert-danger(role="alert") !{message}
+        - else
+          #message.alert.alert-danger(role="alert", style="visibility: hidden;")
